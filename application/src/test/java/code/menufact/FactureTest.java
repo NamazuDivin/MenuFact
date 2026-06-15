@@ -9,7 +9,8 @@ import code.menufact.facture.FactureEtat;
 import code.menufact.facture.exceptions.FactureException;
 import code.menufact.plats.PlatAuMenu;
 import code.menufact.plats.PlatChoisi;
-
+import code.menufact.facture.FactureIterator;
+import code.ingredients.exceptions.IngredientException;
 import code.menufact.plats.Recette;
 import code.menufact.plats.RecetteBuilder;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-public class MenuObservateurTest {
+public class FactureTest {
 
     FactoryLaitier laitier = new FactoryLaitier();
     FactoryLegume legume = new FactoryLegume();
@@ -135,6 +136,7 @@ public class MenuObservateurTest {
 
         String messageSortie = sortie.toString();
         int nb_message = messageSortie.split("le chef a été notifié d'une nouvelle facture", -1).length - 1;
+        assertEquals(2, nb_message);
         System.setOut(System.out);
     }
 
@@ -178,5 +180,80 @@ public class MenuObservateurTest {
         assertThrows(FactureException.class, () -> facture01.ajoutePlat(platChoisi1));
     }
 
+    @Test
+    void payerFacture(){
+        Facture facture01 = new Facture("facture01");
+        facture01.payer();
+        assertEquals(FactureEtat.PAYEE, facture01.getEtat());
+    }
 
+    @Test
+    void fermerFacture(){
+        Facture facture01 = new Facture("facture01");
+        facture01.fermer();
+        assertEquals(FactureEtat.FERMEE, facture01.getEtat());
+    }
+
+    @Test
+    void ouvrirFactureFermee() throws FactureException {
+        Facture facture01 = new Facture("facture01");
+        facture01.fermer();
+        facture01.ouvrir();
+        assertEquals(FactureEtat.OUVERTE, facture01.getEtat());
+    }
+
+    @Test
+    void ouvrirFacturePayee(){
+        Facture facture01 = new Facture("facture01");
+        facture01.payer();
+        assertThrows(FactureException.class, () -> facture01.ouvrir());
+    }
+
+    @Test
+    void factureIteratorVide(){
+        Facture facture01 = new Facture("facture01");
+        FactureIterator iterator = facture01.createIterator();
+        assertFalse(iterator.hasNext());
+    }
+
+    @Test
+    void iteratorNextSansPlat() throws IngredientException, FactureException {
+        Facture facture01 = new Facture("facture");
+        PlatAuMenu p1 = new PlatAuMenu(0, "Frites", 10.0);
+        p1.setRecette(frite);
+        facture01.ajoutePlat(new PlatChoisi(p1, 2));
+        FactureIterator iterator = facture01.createIterator();
+        assertTrue(iterator.hasNext());
+    }
+
+    @Test
+    void iteratorNextUnPlat()throws IngredientException, FactureException {
+        Facture facture = new Facture("facture");
+        PlatAuMenu p1 = new PlatAuMenu(0, "Frites", 10.0);
+        p1.setRecette(frite);
+        facture.ajoutePlat(new PlatChoisi(p1, 2));
+        FactureIterator iterator = facture.createIterator();
+        assertEquals("Frites", iterator.next().getPlat().getDescription());
+    }
+
+    @Test
+    void iteratorNextPlusieursPlats() throws IngredientException, FactureException {
+        Facture facture01 = new Facture("facture");
+        PlatAuMenu p1 = new PlatAuMenu(0, "Frites", 10.0);
+        PlatAuMenu p2 = new PlatAuMenu(1, "Frite sauce", 11.50);
+        PlatAuMenu p3 = new PlatAuMenu(2, "Salade", 5.25);
+        p1.setRecette(frite);
+        p2.setRecette(friteSauce);
+        p3.setRecette(salade);
+        facture01.ajoutePlat(new PlatChoisi(p1, 1));
+        facture01.ajoutePlat(new PlatChoisi(p2, 1));
+        facture01.ajoutePlat(new PlatChoisi(p3, 1));
+        FactureIterator iterator = facture01.createIterator();
+        int nb_facture = 0;
+        while (iterator.hasNext()) {
+            iterator.next();
+            nb_facture++;
+        }
+        assertEquals(3, nb_facture);
+    }
 }
