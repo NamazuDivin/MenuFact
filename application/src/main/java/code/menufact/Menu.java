@@ -10,9 +10,22 @@ public class Menu {
     private int courant;
     private ArrayList<PlatAuMenu> plat = new ArrayList<PlatAuMenu>();
 
-    public Menu(String description) {
+    // ***** Implementation du singleton *****
+    private static Menu instance;
+
+    // constructeur prive
+    private Menu(String description) {
         this.description = description;
     }
+
+    // getInstance
+    public static getInstance(description){
+        if (instance == null){
+            instance = new Menu(description);
+        }
+        return instance;
+    }
+    // ***** Fin implementation du singletion *****
 
     void ajoute (PlatAuMenu p)
     {

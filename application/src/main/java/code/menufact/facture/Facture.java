@@ -3,6 +3,9 @@ package code.menufact.facture;
 import code.menufact.Client;
 import code.menufact.facture.exceptions.FactureException;
 import code.menufact.plats.PlatChoisi;
+// Importer l observateur/chef et Iterator
+import code.menufact.chef.Chef;
+import code.menufact.facture.FactureIterator;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,6 +22,8 @@ public class Facture {
     private ArrayList<PlatChoisi> platchoisi = new ArrayList<PlatChoisi>();
     private int courant;
     private Client client;
+    // liste Array de chef
+    private ArrayList<Chef> chef = new ArrayList<Chef>();
 
 
     /**********************Constantes ************/
@@ -126,6 +131,8 @@ public class Facture {
     {
         if (etat == FactureEtat.OUVERTE)
             platchoisi.add(p);
+            // notifier le chef
+            notifChef();
         else
             throw new FactureException("On peut ajouter un plat seulement sur une facture OUVERTE.");
     }
@@ -179,4 +186,24 @@ public class Facture {
 
         return factureGenere;
     }
+
+    // ***** Implementation de Observateur *****
+    // fonction à ajouter:
+    //   - notifChef
+    public void notifChef(){
+        for (int i=0; i<chef.size(); i++){
+            chef.get(i).update();
+        }
+    }
+
+    //   - ajouterChef
+    public void ajouterChef(Chef c){
+        chef.add(c);
+    }
+
+    //   - createIterator
+    public FactureIterator createIterator(){
+        return new FactureIterator(platchoisi);
+    }
+    // ***** Fin Implementation de observateur *****
 }
