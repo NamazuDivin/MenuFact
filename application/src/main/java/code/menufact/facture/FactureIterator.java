@@ -2,6 +2,7 @@ package code.menufact.facture;
 
 import code.menufact.plats.PlatChoisi;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 /**
  * Classe itérateur sur les plats choisis d'une facture
@@ -25,6 +26,7 @@ public class FactureIterator implements Iterator{
         this.index = 0;
     }
 
+    @Override
     /**
      * Vérifie si il reste des plats à parcourir dans la liste
      *
@@ -34,12 +36,16 @@ public class FactureIterator implements Iterator{
         return index<plats.size();
     }
 
+    @Override
     /**
      * Retourne le prochain plat en augmentant l'index
      *
      * @return le prochain plat dans la liste
      */
     public PlatChoisi next(){
+        if(!hasNext()){
+            throw new NoSuchElementException();
+        }
         return plats.get(index++);
     }
 }

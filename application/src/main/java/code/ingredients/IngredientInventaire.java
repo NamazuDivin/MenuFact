@@ -9,17 +9,11 @@ import code.ingredients.exceptions.IngredientException;
  * @version 1.0
  */
 public class IngredientInventaire {
-    private IngredientInventaire ingredientInventaire;
+    private Ingredient ingredient;
     private int quantite;
 
-    /**
-     * Creé un ingrédient en inventaire et sa quantité
-     *
-     * @param ingredientInventaire
-     * @param quantite
-     */
-    public IngredientInventaire(IngredientInventaire ingredientInventaire, int quantite) {
-        this.ingredientInventaire = ingredientInventaire;
+    public IngredientInventaire(Ingredient ingredient, int quantite) {
+        this.ingredient = ingredient;
         this.quantite = quantite;
     }
 
@@ -31,6 +25,8 @@ public class IngredientInventaire {
     public int getQuantite() {
         return quantite;
     }
+
+    public Ingredient getIngredient() { return ingredient; }
 
     /**
      * Modifie la quantité d'un type d'ingrédient

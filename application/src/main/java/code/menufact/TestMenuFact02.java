@@ -1,5 +1,6 @@
 package code.menufact;
 
+import code.ingredients.exceptions.IngredientException;
 import code.menufact.facture.exceptions.FactureException;
 import code.menufact.exceptions.MenuException;
 import code.menufact.facture.Facture;
@@ -246,6 +247,8 @@ public class TestMenuFact02 {
         catch (FactureException fe)
         {
             throw fe;
+        } catch (IngredientException e) {
+            throw new RuntimeException(e);
         }
         System.out.println(f1);
     }
@@ -277,6 +280,8 @@ public class TestMenuFact02 {
         catch (FactureException fe)
         {
             throw fe;
+        } catch (IngredientException e) {
+            throw new RuntimeException(e);
         }
         System.out.println(f1);
     }
