@@ -12,8 +12,8 @@ import java.util.Date;
 
 /**
  * Une facture du systeme Menufact
- * @author Domingo Palao Munoz
- * @version 1.0
+ * @author Kevin et Léanne
+ * @version 2.0
  */
 public class Facture {
     private Date date;
@@ -129,10 +129,10 @@ public class Facture {
      */
     public void ajoutePlat(PlatChoisi p) throws FactureException
     {
-        if (etat == FactureEtat.OUVERTE)
+        if (etat == FactureEtat.OUVERTE) {
             platchoisi.add(p);
-            // notifier le chef
             notifChef();
+        }
         else
             throw new FactureException("On peut ajouter un plat seulement sur une facture OUVERTE.");
     }
@@ -188,22 +188,32 @@ public class Facture {
     }
 
     // ***** Implementation de Observateur *****
-    // fonction à ajouter:
-    //   - notifChef
+
+    /**
+     * Notifier les chefs d'un changement lorsqu'un plat est ajouté
+     */
     public void notifChef(){
         for (int i=0; i<chef.size(); i++){
             chef.get(i).update();
         }
     }
 
-    //   - ajouterChef
+    /**
+     * Ajoute un chef à la liste d'observateur
+     *
+     * @param c le chef à ajouter comme observateur
+     */
     public void ajouterChef(Chef c){
         chef.add(c);
     }
 
-    //   - createIterator
+    /**
+     * Crée un itérateur sur la liste de plats
+     * implémentation du design pattern Iterator
+     *
+     * @return FactureIterator pour parcourir les plats choisis
+     */
     public FactureIterator createIterator(){
         return new FactureIterator(platchoisi);
     }
-    // ***** Fin Implementation de observateur *****
 }
