@@ -1,14 +1,17 @@
 package code.menufact.facture;
 
+import code.ingredients.exceptions.IngredientException;
+import code.inventaire.Inventaire;
 import code.menufact.Client;
 import code.menufact.facture.exceptions.FactureException;
 import code.menufact.plats.PlatChoisi;
 // Importer l observateur/chef et Iterator
 import code.menufact.chef.Chef;
-import code.menufact.facture.FactureIterator;
+import code.menufact.plats.etat.Impossible;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Une facture du systeme Menufact
@@ -24,7 +27,8 @@ public class Facture {
     private Client client;
     // liste Array de chef
     private ArrayList<Chef> chef = new ArrayList<Chef>();
-
+    private Inventaire inventaire = Inventaire.getInstance();
+    private AdapteurLbToG adapteur;
 
     /**********************Constantes ************/
     private final double TPS = 0.05;
@@ -127,14 +131,15 @@ public class Facture {
      * @param p un plat choisi
      * @throws FactureException Seulement si la facture est OUVERTE
      */
-    public void ajoutePlat(PlatChoisi p) throws FactureException
-    {
-        if (etat == FactureEtat.OUVERTE)
+    public void ajoutePlat(PlatChoisi p) throws FactureException, IngredientException {
+        if (etat == FactureEtat.OUVERTE) {
+            peutCommander(p);
             platchoisi.add(p);
             // notifier le chef
-            notifChef();
-        else
+            notifChef(p);
+        } else {
             throw new FactureException("On peut ajouter un plat seulement sur une facture OUVERTE.");
+        }
     }
 
     /**
@@ -190,9 +195,10 @@ public class Facture {
     // ***** Implementation de Observateur *****
     // fonction à ajouter:
     //   - notifChef
-    public void notifChef(){
+    public void notifChef(PlatChoisi plat){
         for (int i=0; i<chef.size(); i++){
             chef.get(i).update();
+            chef.get(i).cuisiner(plat);
         }
     }
 
@@ -206,4 +212,23 @@ public class Facture {
         return new FactureIterator(platchoisi);
     }
     // ***** Fin Implementation de observateur *****
+
+    public void peutCommander(PlatChoisi plat) throws IngredientException {
+        for(var item : plat.getPlat().getRecette().getIngredients().entrySet()) {
+            int qteRequis;
+            //si c'est des Lb alors applique l'adapteur pour transformer lb en g
+            if (Objects.equals(item.getValue().getType(), "lb")) {
+                adapteur = new AdapteurLbToG(item.getValue());
+                qteRequis = adapteur.adapteQte()* plat.getQuantite();
+            } else {
+                qteRequis = item.getValue().getQte() * plat.getQuantite();
+            }
+            int qteInventaire = inventaire.getQuantite(item.getKey());
+            if(qteRequis > qteInventaire) {
+                plat.setEtat(new Impossible());
+            } else {
+                inventaire.setQuantite(item.getKey(),qteInventaire-qteRequis);
+            }
+        }
+    }
 }

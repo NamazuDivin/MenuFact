@@ -3,6 +3,7 @@ package code.menufact.facture;
 import code.menufact.plats.PlatChoisi;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class FactureIterator implements Iterator{
 
@@ -14,11 +15,16 @@ public class FactureIterator implements Iterator{
         this.index = 0;
     }
 
+    @Override
     public boolean hasNext(){
         return index<plats.size();
     }
 
+    @Override
     public PlatChoisi next(){
-        return plats.get(index++)
+        if(!hasNext()){
+            throw new NoSuchElementException();
+        }
+        return plats.get(index++);
     }
 }

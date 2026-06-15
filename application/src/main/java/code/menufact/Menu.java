@@ -19,7 +19,7 @@ public class Menu {
     }
 
     // getInstance
-    public static getInstance(description){
+    public static Menu getInstance(String description){
         if (instance == null){
             instance = new Menu(description);
         }

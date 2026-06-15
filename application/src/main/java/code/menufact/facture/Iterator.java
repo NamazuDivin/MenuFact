@@ -1,6 +1,6 @@
 package code.menufact.facture;
 
-import code.menufact.plats.platChoisi;
+import code.menufact.plats.PlatChoisi;
 
 public interface Iterator {
     public boolean hasNext();

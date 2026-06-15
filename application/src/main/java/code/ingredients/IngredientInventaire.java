@@ -3,17 +3,19 @@ package code.ingredients;
 import code.ingredients.exceptions.IngredientException;
 
 public class IngredientInventaire {
-    private IngredientInventaire ingredientInventaire;
+    private Ingredient ingredient;
     private int quantite;
 
-    public IngredientInventaire(IngredientInventaire ingredientInventaire, int quantite) {
-        this.ingredientInventaire = ingredientInventaire;
+    public IngredientInventaire(Ingredient ingredient, int quantite) {
+        this.ingredient = ingredient;
         this.quantite = quantite;
     }
 
     public int getQuantite() {
         return quantite;
     }
+
+    public Ingredient getIngredient() { return ingredient; }
 
     public void setQuantite(int quantite) throws IngredientException{
 
