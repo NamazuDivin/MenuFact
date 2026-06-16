@@ -60,6 +60,7 @@ public class RecetteBuilderTest {
     @Test
     void testQuantiteNegative() {
         assertThrows(IllegalArgumentException.class, () -> new Quantite(-5, "g"));
+
     }
 
     @Test

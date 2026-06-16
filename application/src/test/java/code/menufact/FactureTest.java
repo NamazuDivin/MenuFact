@@ -40,7 +40,7 @@ public class FactureTest {
     void setup() throws Exception {
         inventaire.ajouter(pomme, 300);
         inventaire.ajouter(laitue, 300);
-        inventaire.ajouter(fromage, 300);
+        inventaire.ajouter(fromage, 1000);
         inventaire.ajouter(vinaigrette, 500);
         inventaire.ajouter(sauce, 2000);
         inventaire.ajouter(bacon, 300);
@@ -255,5 +255,56 @@ public class FactureTest {
             nb_facture++;
         }
         assertEquals(3, nb_facture);
+    }
+
+    @Test
+    void testChefCuisiner() {
+        Chef chef1 = new Chef();
+        PlatAuMenu p1 = new PlatAuMenu(0, "Frites", 10.0);
+        p1.setRecette(frite);
+        PlatChoisi plat = new PlatChoisi(p1, 2);
+        chef1.cuisiner(plat);
+        assertEquals("Preparation", plat.getEtat());
+    }
+
+    @Test
+    void testFacturePeutCuisiner() throws IngredientException {
+        Chef chef1 = new Chef();
+        Facture facture01 = new Facture("facture");
+        Recette collation = recettes.ajouterIngredient(fromage, 100, "g").build();
+        PlatAuMenu p1 = new PlatAuMenu(0, "Collation", 10.0);
+        p1.setRecette(collation);
+        PlatChoisi plat = new PlatChoisi(p1, 2);
+        facture01.peutCommander(plat);
+        assertEquals("Commande", plat.getEtat());
+        assertEquals(800, inventaire.getQuantite(fromage));
+    }
+
+    @Test
+    void testFacturePeutCuisinerImpossible() throws IngredientException {
+        Chef chef1 = new Chef();
+        Facture facture01 = new Facture("facture");
+        Recette collation = recettes.ajouterIngredient(fromage, 1000, "g").build();
+        PlatAuMenu p1 = new PlatAuMenu(0, "Collation", 10.0);
+        p1.setRecette(collation);
+        PlatChoisi plat = new PlatChoisi(p1, 2);
+        facture01.peutCommander(plat);
+        assertEquals("Impossible", plat.getEtat());
+    }
+
+    @Test
+    void testFactureAjoutePlatEtCuisine() throws IngredientException, FactureException {
+        Chef chef1 = new Chef();
+        Facture facture01 = new Facture("facture");
+        facture01.ajouterChef(chef1);
+        Recette collation = recettes.ajouterIngredient(fromage, 10, "g").build();
+        PlatAuMenu p1 = new PlatAuMenu(0, "Collation", 10.0);
+        p1.setRecette(collation);
+        PlatChoisi plat = new PlatChoisi(p1, 2);
+        assertEquals("Commande", plat.getEtat());
+        facture01.ajoutePlat(plat);
+        assertEquals("Preparation", plat.getEtat());
+        chef1.cuisiner(plat);
+        assertEquals("Termine", plat.getEtat());
     }
 }

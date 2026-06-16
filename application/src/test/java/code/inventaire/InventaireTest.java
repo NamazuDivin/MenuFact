@@ -2,6 +2,7 @@ package code.inventaire;
 
 import code.ingredients.*;
 import code.ingredients.exceptions.IngredientException;
+import code.menufact.plats.Quantite;
 import code.menufact.plats.Recette;
 import code.menufact.plats.RecetteBuilder;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,9 +27,27 @@ public class InventaireTest {
     RecetteBuilder recettes = new RecetteBuilder();
     Recette salade, cesar, frite, friteSauce;
 
-    @BeforeEach
-    void setup() throws Exception {
+    @Test
+    void testIngredientInventaireDonnees() {
+        IngredientInventaire i1 = new IngredientInventaire(laitue, 300);
+        assertEquals(300, i1.getQuantite());
+        assertEquals(laitue, i1.getIngredient());
+    }
 
+    @Test
+    void testIngredientInventaireSetQuantite() throws IngredientException {
+        IngredientInventaire i1 = new IngredientInventaire(laitue, 300);
+        i1.setQuantite(10);
+        assertEquals(10, i1.getQuantite());
+    }
+
+    @Test
+    void testIngredientInventaireSetQuantiteNegative() throws IngredientException {
+        IngredientInventaire i1 = new IngredientInventaire(laitue, 300);
+        assertThrows(IngredientException.class, () -> i1.setQuantite(-10));
+        assertEquals("la quantité doit être positive", assertThrows(
+                IllegalArgumentException.class,
+                () -> new Quantite(-10, "g")).getMessage());
     }
 
     @Test
