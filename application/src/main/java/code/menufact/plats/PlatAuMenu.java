@@ -48,10 +48,18 @@ public class PlatAuMenu {
         this.prix = prix;
     }
 
+    /**
+     * permet d'associer une recette à un plat
+     * @param recette
+     */
     public void setRecette(Recette recette) {
         this.recette = recette;
     }
 
+    /**
+     * permet d'accéder à la recette qui permet de créer le plat
+     * @return la recette du plat
+     */
     public Recette getRecette() {
         return recette;
     }

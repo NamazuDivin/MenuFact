@@ -192,9 +192,6 @@ public class Facture {
         return factureGenere;
     }
 
-    // ***** Implementation de Observateur *****
-    // fonction à ajouter:
-    //   - notifChef
     /**
      * Notifier les chefs d'un changement lorsqu'un plat est ajouté
      */
@@ -223,24 +220,33 @@ public class Facture {
     public FactureIterator createIterator(){
         return new FactureIterator(platchoisi);
     }
-    // ***** Fin Implementation de observateur *****
 
+    /**
+     * permet de vérifier en inventaire s'il y a assez d'ingredient pour faire le plat
+     * si oui ils sont déduit de l'inventraire
+     * sinon le plat change d'état pour impossible
+     * @param plat
+     * @throws IngredientException s'il n'y a pas de recette associe au platChoisi
+     */
     public void peutCommander(PlatChoisi plat) throws IngredientException {
-        for(var item : plat.getPlat().getRecette().getIngredients().entrySet()) {
-            int qteRequis;
-            //si c'est des Lb alors applique l'adapteur pour transformer lb en g
-            if (Objects.equals(item.getValue().getType(), "lb")) {
-                adapteur = new AdapteurLbToG(item.getValue());
-                qteRequis = adapteur.adapteQte()* plat.getQuantite();
-            } else {
-                qteRequis = item.getValue().getQte() * plat.getQuantite();
+        if (plat.getPlat().getRecette()!=null) {
+            for (var item : plat.getPlat().getRecette().getIngredients().entrySet()) {
+                int qteRequis;
+                if (Objects.equals(item.getValue().getType(), "lb")) {
+                    adapteur = new AdapteurLbToG(item.getValue());
+                    qteRequis = adapteur.adapteQte() * plat.getQuantite();
+                } else {
+                    qteRequis = item.getValue().getQte() * plat.getQuantite();
+                }
+                int qteInventaire = inventaire.getQuantite(item.getKey());
+                if (qteRequis > qteInventaire) {
+                    plat.setEtat(new Impossible());
+                } else {
+                    inventaire.setQuantite(item.getKey(), qteInventaire - qteRequis);
+                }
             }
-            int qteInventaire = inventaire.getQuantite(item.getKey());
-            if(qteRequis > qteInventaire) {
-                plat.setEtat(new Impossible());
-            } else {
-                inventaire.setQuantite(item.getKey(),qteInventaire-qteRequis);
-            }
+        } else {
+            throw new IngredientException("il n'y a pas de recette");
         }
     }
 }

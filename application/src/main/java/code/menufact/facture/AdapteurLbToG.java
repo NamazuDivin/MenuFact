@@ -5,6 +5,10 @@ import code.menufact.plats.Quantite;
 public class AdapteurLbToG {
     private Quantite quantite;
 
+    /**
+     * permet de creer un adapteur pour une quantite
+     * @param quantite
+     */
     public AdapteurLbToG(Quantite quantite) {
         this.quantite = quantite;
     }

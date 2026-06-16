@@ -8,6 +8,11 @@ public class PlatChoisi {
     private int quantite;
     private State etat;
 
+    /**
+     * permet de creer le plat choisi et enregistrer son etat, plat et qte
+     * @param plat
+     * @param quantite
+     */
     public PlatChoisi(PlatAuMenu plat, int quantite) {
         this.plat = plat;
         this.quantite = quantite;
@@ -34,14 +39,25 @@ public class PlatChoisi {
         return plat;
     }
 
+    /**
+     * permet d'obtenir le nom de l'etat actuel
+     * @return
+     */
     public String getEtat() {
         return etat.getEtat();
     }
 
+    /**
+     * permet de changer l'etat pour un etat choisi
+     * @param etat etat que va devenir le plat
+     */
     public void setEtat(State etat) {
         this.etat = etat;
     }
 
+    /**
+     * permet de changer l'etat du plat en fonction de l'etat precedent
+     */
     public void changeEtat() {
         etat.changeEtat(this);
     }

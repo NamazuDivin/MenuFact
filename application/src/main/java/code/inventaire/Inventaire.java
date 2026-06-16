@@ -22,15 +22,25 @@ public class Inventaire {
      * @param ingredient le type d'ingrédient à ajouter
      */
     public void ajouter (Ingredient ingredient, Integer quantite) throws IngredientException {
-        for(IngredientInventaire i: lesIngredients) {
-            if (i.getIngredient()==ingredient) {
-                i.setQuantite(i.getQuantite()+quantite);
-                return;
+        if (quantite>=0) {
+            for(IngredientInventaire i: lesIngredients) {
+                if (i.getIngredient()==ingredient) {
+                    i.setQuantite(i.getQuantite()+quantite);
+                    return;
+                }
             }
+            lesIngredients.add(new IngredientInventaire(ingredient, quantite));
+        } else {
+            throw new IngredientException("Il ne peut pas y avoir une quantite negative d'ingredient");
         }
-        lesIngredients.add(new IngredientInventaire(ingredient,quantite));
     }
 
+    /**
+     * permet d'obtenir la quantite d'un ingredient dans l'inventaire
+     * s'il n'y ait pas, return 0
+     * @param ingredient
+     * @return quantite d'ingredient
+     */
     public int getQuantite(Ingredient ingredient) {
         for(IngredientInventaire i:lesIngredients){
             if(i.getIngredient()==ingredient){
@@ -40,6 +50,13 @@ public class Inventaire {
         return 0;
     }
 
+    /**
+     * permet de set une quantite d'ingredient, la quantite indiquee
+     * sera la nouvelle quantite en inventaire
+     * @param ingredient
+     * @param qte
+     * @throws IngredientException si la quantite qu'on essaie de set est negative
+     */
     public void setQuantite(Ingredient ingredient, Integer qte) throws IngredientException {
         for(IngredientInventaire i:lesIngredients){
             if(i.getIngredient()==ingredient){
@@ -48,19 +65,18 @@ public class Inventaire {
         }
     }
 
-    // ***** Implementation du singleton *****
-    private static Inventaire instance;
 
-    // constructeur prive
+    private static Inventaire instance;
     private Inventaire() {}
 
-    // getInstance
+    /**
+     * singleton, assure qu'un seul inventaire existe en tout temps
+     * @return l'instance de l'inventaire
+     */
     public static Inventaire getInstance(){
         if (instance == null){
             instance = new Inventaire();
         }
         return instance;
     }
-    // ***** Fin implementation du singletion *****
-
 }
