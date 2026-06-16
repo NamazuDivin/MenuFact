@@ -2,6 +2,13 @@ package code.menufact.facture;
 
 import code.menufact.plats.Quantite;
 
+/**
+ * Classe publique permettant de transformer un poids en gramme à partir d'un poids en livre
+ * design pattern Adapteur
+ *
+ * @author Kevin et leanne
+ * @version 1.0
+ */
 public class AdapteurLbToG {
     private Quantite quantite;
 

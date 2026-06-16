@@ -1,5 +1,12 @@
 package code.menufact.plats;
 
+/**
+ * Classe publique représentant un plat pour enfant
+ * Hérite de PlatAuMenu et ajoute une portion réduite
+ *
+ * @author Kevin et leanne
+ * @version 2.0
+ */
 public class PlatEnfant extends PlatAuMenu{
     private double proportion;
 

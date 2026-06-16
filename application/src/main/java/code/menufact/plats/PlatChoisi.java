@@ -2,7 +2,12 @@ package code.menufact.plats;
 import code.menufact.plats.etat.Commande;
 import code.menufact.plats.etat.State;
 
-
+/**
+ * Classe publique permettant d'accéder aux informations d'un PlatChoisi
+ *
+ * @author Kevin et leanne
+ * @version 2.0
+ */
 public class PlatChoisi {
     private PlatAuMenu plat;
     private int quantite;

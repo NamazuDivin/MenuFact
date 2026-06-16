@@ -5,6 +5,13 @@ import code.ingredients.exceptions.IngredientException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Classe permettant de construire une recette
+ * Design Pattern Builder
+ *
+ * @author Kevin et Léanne
+ * @version 2.0
+ */
 public class RecetteBuilder {
     public RecetteBuilder() {
         ingredients = new HashMap<>();

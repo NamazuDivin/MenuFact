@@ -1,5 +1,12 @@
 package code.menufact.plats;
 
+/**
+ * Classe publique représentant un plat santé
+ * Hérite de PlatAuMenu et ajoute des informations supplémentaires
+ *
+ * @author Kevin et leanne
+ * @version 2.0
+ */
 public class PlatSante extends PlatAuMenu {
     private double kcal;
     private double chol;

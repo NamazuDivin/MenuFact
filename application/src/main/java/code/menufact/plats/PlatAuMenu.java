@@ -1,5 +1,11 @@
 package code.menufact.plats;
 
+/**
+ * Classe publique permettant d'accéder aux informations d'un PlatAuMenu
+ *
+ * @author Kevin et leanne
+ * @version 2.0
+ */
 public class PlatAuMenu {
     private int code;
     private String description;

@@ -16,7 +16,11 @@ public class Chef implements Observateur {
     public void update(){
         System.out.println("le chef a été notifié d'une nouvelle facture");
     }
-    
+
+    /**
+     * Permet au chef de changer l'état d'un plat
+     * @param plat
+     */
     public void cuisiner(PlatChoisi plat) {
         plat.changeEtat();
     }

@@ -4,6 +4,12 @@ import code.ingredients.Ingredient;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Classe représentant la recette d'un plat et les ingrédients nécessaire
+ *
+ * @author Kevin et Léanne
+ * @version 2.0
+ */
 public class Recette {
 
     private Map<Ingredient, Quantite> ingredients;

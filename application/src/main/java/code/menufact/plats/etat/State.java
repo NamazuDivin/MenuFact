@@ -2,6 +2,12 @@ package code.menufact.plats.etat;
 
 import code.menufact.plats.PlatChoisi;
 
+/**
+ * Classe publique permettant de gerer les états d'une commande
+ *
+ * @author Kevin et leanne
+ * @version 1.0
+ */
 public interface State {
 
     /**
