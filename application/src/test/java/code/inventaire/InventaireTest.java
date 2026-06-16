@@ -1,16 +1,11 @@
-package code.menufact;
+package code.inventaire;
 
 import code.ingredients.*;
 import code.ingredients.exceptions.IngredientException;
-import code.inventaire.Inventaire;
-import code.menufact.plats.Quantite;
 import code.menufact.plats.Recette;
 import code.menufact.plats.RecetteBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
