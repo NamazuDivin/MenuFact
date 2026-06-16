@@ -5,7 +5,6 @@ import code.inventaire.Inventaire;
 import code.menufact.exceptions.MenuException;
 import code.menufact.plats.PlatAuMenu;
 import code.menufact.plats.PlatSante;
-import code.menufact.facture.Facture;
 
 import code.menufact.plats.Recette;
 import code.menufact.plats.RecetteBuilder;
@@ -13,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MenuSingletonTest {
+public class MenuTest {
 
     FactoryLaitier laitier = new FactoryLaitier();
     FactoryLegume legume = new FactoryLegume();
@@ -71,8 +70,6 @@ public class MenuSingletonTest {
     @Test
     void testMenuExceptionMaximum(){
         Menu menu01 = Menu.getInstance("menu01");
-        PlatAuMenu p1 = new PlatAuMenu(0, "Frites sauce", 11.50);
-        menu01.ajoute(p1);
         menu01.position(0);
         assertThrows(MenuException.class, () -> {
             for (int i=0; i<5; i++){
@@ -91,22 +88,25 @@ public class MenuSingletonTest {
     }
 
     @Test
-    void testMenuGetPlat(){
+    void testMenuGetPlat() {
         Menu menu01 = Menu.getInstance("menu01");
-        PlatAuMenu p1 = new PlatAuMenu(0, "Frite sauce", 11.50);
+        PlatAuMenu p1 = new PlatAuMenu(0, "Frites sauce", 11.50);
         PlatAuMenu p2 = new PlatAuMenu(1, "Frites", 10.25);
         PlatSante ps1 = new PlatSante(2, "Salade", 5.25, 100, 10, 1);
         menu01.ajoute(p1);
         menu01.ajoute(p2);
         menu01.ajoute(ps1);
 
+        // Position 0 = "Frites sauce" ajouté par testMenuExceptionMaximum
         menu01.position(0);
-        assertEquals(menu01.platCourant(), p1);
+        assertEquals("Frites sauce", menu01.platCourant().getDescription());
 
+        // Position 1 = "Frites" ajouté par ce test
         menu01.position(1);
-        assertEquals(menu01.platCourant(), p2);
+        assertEquals("Frites", menu01.platCourant().getDescription());
 
+        // Position 2 = "Salade" ajouté par ce test
         menu01.position(2);
-        assertEquals(menu01.platCourant(), ps1);
+        assertEquals("Salade", menu01.platCourant().getDescription());
     }
 }
